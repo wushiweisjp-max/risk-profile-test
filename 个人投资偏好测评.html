@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>投资风险偏好测评｜新加坡Mr吴</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Microsoft YaHei", sans-serif; background: linear-gradient(180deg,#f4f7ff,#ffffff); color: #222; position: relative; }
+.container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; padding: 30px; position: relative; }
+h1 { color: #1a73e8; font-size: 26px; margin-bottom: 10px; }
+h2 { color: #333; font-size: 20px; margin-bottom: 24px; line-height: 1.5; }
+.option { width: 100%; max-width: 340px; margin: 10px auto; padding: 14px 18px; background-color: #e9f0ff; border-radius: 12px; cursor: pointer; transition: 0.3s; font-size: 16px; }
+.option:hover { background-color: #d2e2ff; }
+button { margin-top: 30px; padding: 12px 28px; font-size: 16px; background-color: #1a73e8; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+.hide { display: none; }
+.result { font-size: 18px; line-height: 1.8; }
+.footer { margin-top: 30px; font-size: 14px; color: #555; line-height: 1.5; }
+.logo { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 20px; background: url('https://upload.wikimedia.org/wikipedia/commons/8/8e/Finance_Icon.svg') center/cover no-repeat; }
+.fade { animation: fadeIn 0.8s ease; }
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+/* 固定底部角标 */
+.fixed-bar {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ff2442;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #ff2442;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: left;
+  line-height: 1.6;
+}
+.fixed-bar a {
+  color: #ff2442;
+  text-decoration: none;
+}
+.copy-btn {
+  background: #ff2442;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: 6px;
+  cursor: pointer;
+}
+.copy-btn:active {
+  background: #e01c35;
+}
+</style>
+</head>
+<body>
+
+<div class="container fade" id="q1">
+  <div class="logo"></div>
+  <h1>投资风险承受能力测评</h1>
+  <h2>看看你属于哪种投资类型？</h2>
+  <button onclick="next(0)">开始测评</button>
+</div>
+
+<!-- Q1 -->
+<div class="container hide fade" id="q2">
+  <h2>1️⃣ 你能接受资产波动程度？</h2>
+  <div class="option" onclick="select(1)">A. 不想亏，即使回报较低</div>
+  <div class="option" onclick="select(5)">B. 可接受偶尔波动</div>
+  <div class="option" onclick="select(9)">C. 愿承担大波动,追求高回报</div>
+</div>
+
+<!-- Q2 -->
+<div class="container hide fade" id="q3">
+  <h2>2️⃣ 你更重视什么？</h2>
+  <div class="option" onclick="select(1)">A. 本金绝对安全</div>
+  <div class="option" onclick="select(5)">B. 跟上通胀，有时可跌</div>
+  <div class="option" onclick="select(9)">C. 超越通胀，愿承担风险</div>
+</div>
+
+<!-- Q3 -->
+<div class="container hide fade" id="q4">
+  <h2>3️⃣ 你一年能接受的最大亏损？</h2>
+  <div class="option" onclick="select(1)">A. 0%</div>
+  <div class="option" onclick="select(3)">B. 5%</div>
+  <div class="option" onclick="select(5)">C. 10%</div>
+  <div class="option" onclick="select(7)">D. 20%</div>
+  <div class="option" onclick="select(9)">E. 30%</div>
+</div>
+
+<!-- Q4 -->
+<div class="container hide fade" id="q5">
+  <h2>4️⃣ 若两种投资：A年回报3%，B年回报7%，但B可能亏20%，你会？</h2>
+  <div class="option" onclick="select(1)">A. 全投A</div>
+  <div class="option" onclick="select(3)">B. 75%A + 25%B</div>
+  <div class="option" onclick="select(5)">C. 各半</div>
+  <div class="option" onclick="select(7)">D. 25%A + 75%B</div>
+  <div class="option" onclick="select(9)">E. 全投B</div>
+</div>
+
+<!-- Q5 -->
+<div class="container hide fade" id="q6">
+  <h2>5️⃣ 若投资达不到目标，你能削减多少支出？</h2>
+  <div class="option" onclick="select(1)">A. 完全不能减少</div>
+  <div class="option" onclick="select(3)">B. 可减少约1/3</div>
+  <div class="option" onclick="select(7)">C. 可减少约2/3</div>
+  <div class="option" onclick="select(9)">D. 可完全取消</div>
+</div>
+
+<!-- Result -->
+<div class="container hide fade" id="result">
+  <h1>🎯 测评结果</h1>
+  <div id="score" class="result"></div>
+  <div id="type" class="result"></div>
+  <div class="footer">
+    📊 想知道你的专属投资组合？<br>
+    添加微信：<b>louiswutt</b> 免费领取<br>
+    《新加坡家庭理财配置表》📈
+  </div>
+  <button onclick="restart()">重新测评</button>
+</div>
+
+<!-- 小红书 + 微信角标 -->
+<div class="fixed-bar">
+  🔗 小红书 <a href="https://www.xiaohongshu.com/user/profile/5a166b75e8ac2b2903e86870" target="_blank">@新加坡Mr吴</a><br>
+  💬 微信号：<span id="wxid">louiswutt</span>
+  <button class="copy-btn" onclick="copyWeChat()">复制</button>
+</div>
+
+<script>
+let total = 0, step = 1;
+
+function next(score){
+  total = 0; step++;
+  showNext();
+}
+
+function select(score){
+  total += score;
+  step++;
+  if(step <= 6){
+    showNext();
+  } else {
+    showResult();
+  }
+}
+
+function showNext(){
+  document.querySelectorAll('.container').forEach(e=>e.classList.add('hide'));
+  document.getElementById("q"+step).classList.remove('hide');
+}
+
+function showResult(){
+  let type = "";
+  if(total <= 15) type = "🧊 保守型：重视安全与稳定收益。";
+  else if(total <= 25) type = "🌿 稳健型：平衡风险与收益，适合中期投资。";
+  else if(total <= 35) type = "☀️ 平衡型：追求长期成长，能接受波动。";
+  else type = "🔥 进取型：敢于承担风险，追求高回报。";
+  document.querySelectorAll('.container').forEach(e=>e.classList.add('hide'));
+  document.getElementById("score").innerHTML = "总分：" + total + " 分";
+  document.getElementById("type").innerHTML = type;
+  document.getElementById("result").classList.remove('hide');
+}
+
+function restart(){
+  total = 0; step = 1;
+  document.querySelectorAll('.container').forEach(e=>e.classList.add('hide'));
+  document.getElementById("q1").classList.remove('hide');
+}
+
+// 复制微信号功能
+function copyWeChat(){
+  const text = "louiswutt";
+  navigator.clipboard.writeText(text).then(() => {
+    alert("✅ 微信号已复制：" + text);
+  }).catch(err => {
+    console.error("复制失败：", err);
+  });
+}
+</script>
+
+</body>
+</html>
